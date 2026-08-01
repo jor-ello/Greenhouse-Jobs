@@ -83,7 +83,7 @@ def Clear_Greenhouse_Tables():
       greenhouse_table_names = sgt.greenhouse_table_names
 
       for table_name in greenhouse_table_names:
-           delete_script = 'DROP TABLE IF EXISTS ' + table_name
+           delete_script = 'DROP TABLE IF EXISTS ' + table_name + ' CASCADE'
            cur.execute(delete_script)
 
       conn.commit()
@@ -95,3 +95,46 @@ def Clear_Greenhouse_Tables():
            cur.close()
        if conn is not None:
            conn.close()
+
+
+##################################
+#
+# Rudimentary Method for Loading Skills onto the skills table
+#
+##################################
+
+def Load_Skills_Table():
+
+   # Need to provide these details in a config file 
+
+   hostname = config.hostname
+   username = config.username
+   database = config.database
+   pwd = config.pwd
+   port_id = config.port_id
+   conn = None
+   cur = None
+
+   try:
+      conn = pg2.connect(
+          host = hostname,
+          dbname = database,
+          user = username,
+          password = pwd,
+          port = port_id)
+
+      cur = conn.cursor()
+
+      skills_list = sgt.skills_list
+      add_skill = sgt.add_skill
+
+      for skill in skills_list:
+         cur.execute(add_skill,skill)
+
+   except Exception as error:
+      print(error)
+   finally:
+      if cur is not None:
+          cur.close()
+      if conn is not None:
+          conn.close()

@@ -29,7 +29,8 @@ fgt.Init_Greenhouse_Tables()
 
 companies = sgt.greenhouse_companies
 
-# Need to provide these details in a config file                                
+# Need to provide these details in a config file
+
 hostname = config.hostname
 username = config.username
 database = config.database
@@ -37,6 +38,10 @@ pwd = config.pwd
 port_id = config.port_id
 conn = None
 cur = None
+
+add_company = sgt.add_company
+add_job = sgt.add_job
+add_job_skill = sgt.add_job_skill
 
 try:
    
@@ -63,11 +68,19 @@ try:
       data = response.text
 
       data_json = json.loads(data)
+
+      jobs_list = data_json['jobs']
       
       try:
           jobs_list = data_json['jobs']
+          cur.execute(add_company , (company,))
+          curr_company_id = cur.fetchone()[0]
+          conn.commit()
+          print(curr_company_id)
+          # jobs_list = []
       except:
           jobs_list = []
+          print('Cannot pull jobs from ', company)
           
       for posting in jobs_list:
          
@@ -86,11 +99,17 @@ try:
          ###########################
 
          
-         posting_url = 'https://boards-api.greenhouse.io/v1/boards/'+ company  + '/jobs/' + str(posting['id']) 
-         posting_response = requests.get(posting_url)
+         posting_url = [
+            'https://boards-api.greenhouse.io/v1/boards/'
+            + company
+            + '/jobs/' + str(posting['id'])]
+         posting_response = requests.get(posting_url[0])
          posting_data = posting_response.text
 
          current_job = json.loads(posting_data)
+
+         conn.commit()
+         
 
          ##################################################################
          #
@@ -99,10 +118,23 @@ try:
          ##################################################################
 
          # Debug Line to check loop iteration 
-         print('Checking job title: ', current_job['title'])
+         # print('Checking job title: ', current_job['title'])
 
+         try:
+            
+            job_title = current_job['title']
+            gj_id = current_job['id']
+            ij_id = current_job['internal_job_id']
+            loc = current_job['location']['name']
+            posted = current_job['first_published']
+            updated = current_job['updated_at']
+            url = current_job['absolute_url']
 
-
+            cur.execute(add_job , (gj_id, ij_id, curr_company_id, job_title, loc, posted, updated, url))
+            
+            conn.commit()
+         except:
+            print('Error inserting: ' , current_job['title'])
 
 
 
