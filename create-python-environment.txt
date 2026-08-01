@@ -1,0 +1,30 @@
+python3 -m venv path/to/venv
+source path/to/venv/bin/activate
+python3 -m pip install xyz #to install all packages that have yet to be installed into the venv
+
+#exit venv with deactivate
+
+
+
+#libraries for data science
+pandas
+numpy
+
+#libraries for webscraping
+requests
+beautifulsoup4
+openpyxl
+selenium (from selenium import webdriver)
+
+#other
+re #regular expressions for use in string maipulation in python
+time
+
+
+
+
+
+
+python3 -m venv .
+source ./bin/activate
+python3 -m pip install pandas numpy requests beautifulsoup4 openpyxl selenium re time

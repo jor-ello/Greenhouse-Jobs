@@ -1,0 +1,5 @@
+Useful links for particular documentation:
+
+#Explains the find() and find_all() methods in BeautifulSoup4
+
+https://www.scraperapi.com/blog/python-beautifulsoup-find-and-findall-methods/

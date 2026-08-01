@@ -1,2 +1,2 @@
-# Greenhouse-Jobs
-A repository containing various files used to scrape jobs from Greenhouse.io, and store results in a PostgreSQL database
+# Code-Templates
+Templates for various tasks, so that I don't have to type them over and over again.
