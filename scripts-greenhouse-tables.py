@@ -4,22 +4,19 @@
 #
 #####################################
 
-# Table 1 (Companies): company_id (Serial?), name (str)
+# Table 1 (companies): company_id (serial pk), company_name (str)
 #
 #
-# Table 2 (Jobs): job_id, company_id (linked), job_title, location, posted_date, updated_date, salary_low, salary_high, url
+# Table 2 (jobs): job_id (serial pk), company_id (linked), job_title,
+#                 location, posted_date, updated_date, salary_low, salary_high, url
 #
 #
-# Table 3 (Skills): skill_id (serial?), skill_name
+# Table 3 (skills): skill_id (serial pk), skill_name
 #
 #
-# Table 4 (JobSkills): job_id (linked), skill_id (linked)
+# Table 4 (job_skills): job_id (linked), skill_id (linked)
 #
-#
-#
-#
-#
-#
+
 
 
 
@@ -31,14 +28,27 @@
 #####################################
 
 create_companies = '''CREATE TABLE IF NOT EXISTS companies(                  
-                          company_id type1 ,                     
-                          name type2 )'''
+                          company_id       SERIAL           PRIMARY KEY ,                     
+                          company_name     VARCHAR(100)     NOT NULL )'''
 
-create_jobs = ''''''
+create_jobs = '''CREATE TABLE IF NOT EXISTS jobs(
+                          job_id       SERIAL         PRIMARY KEY ,
+                          company_id   INTEGER        REFERENCES companies(company_id) ,
+                          job_title    VARCHAR(200)   NOT NULL ,
+                          location     VARCHAR(200)   NOT NULL , 
+                          posted_date  TIMESTAMP      NOT NULL ,
+                          updated_date TIMESTAMP , 
+                          salary_low   INTEGER , 
+                          salary_high  INTEGER ,
+                          url          VARCHAR(100)   NOT NULL )'''
 
-create_skills = ''''''
+create_skills = '''CREATE TABLE IF NOT EXISTS skills(
+                          skill_id     SERIAL         PRIMARY KEY , 
+                          skill_name   VARCHAR(100)   NOT NULL )'''
 
-create_jobskills = ''''''
+create_job_skills = '''CREATE TABLE IF NOT EXISTS job_skills(
+                          job_id       INTEGER     REFERENCES jobs(job_id) , 
+                          skill_id     INTEGER     REFERENCES skills(skill_id) )'''
 
 #####################################
 #
@@ -73,6 +83,10 @@ update_job = ''
 #
 #####################################
 
-fortune_500 = ()
+greenhouse_table_names = ('companies','jobs','skills','jobskills')
 
-remote_first = ()
+fortune_500s = ()
+
+remote_firsts = ()
+
+skills_list = ()

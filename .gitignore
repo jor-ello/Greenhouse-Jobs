@@ -2,3 +2,4 @@ bin/
 config.py
 lib/
 pyvenv.cng
+__pycache__/
