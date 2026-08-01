@@ -28,14 +28,17 @@
 #####################################
 
 create_companies = '''CREATE TABLE IF NOT EXISTS companies(                  
-                          company_id       SERIAL           PRIMARY KEY ,                     
-                          company_name     VARCHAR(100)     NOT NULL )'''
+                          company_id              SERIAL           PRIMARY KEY ,
+                          greenhouse_company_id   INTEGER          UNIQUE ,
+                          company_name            VARCHAR(100)     NOT NULL )'''
 
 create_jobs = '''CREATE TABLE IF NOT EXISTS jobs(
-                          job_id       SERIAL         PRIMARY KEY ,
-                          company_id   INTEGER        REFERENCES companies(company_id) ,
-                          job_title    VARCHAR(200)   NOT NULL ,
-                          location     VARCHAR(200)   NOT NULL , 
+                          job_id                  SERIAL         PRIMARY KEY ,
+                          greenhouse_job_id       INTEGER        UNIQUE NOT NULL ,
+                          internal_job_id         INTEGER        UNIQUE NOT NULL ,
+                          company_id              INTEGER        REFERENCES companies(company_id) ,
+                          job_title               VARCHAR(200)   NOT NULL ,
+                          location                VARCHAR(200)   NOT NULL , 
                           posted_date  TIMESTAMP      NOT NULL ,
                           updated_date TIMESTAMP , 
                           salary_low   INTEGER , 
@@ -47,7 +50,7 @@ create_skills = '''CREATE TABLE IF NOT EXISTS skills(
                           skill_name   VARCHAR(100)   NOT NULL )'''
 
 create_job_skills = '''CREATE TABLE IF NOT EXISTS job_skills(
-                          job_id       INTEGER     REFERENCES jobs(job_id) , 
+                          job_id       INTEGER     REFERENCES jobs(job_id) ,
                           skill_id     INTEGER     REFERENCES skills(skill_id) )'''
 
 #####################################
@@ -56,19 +59,22 @@ create_job_skills = '''CREATE TABLE IF NOT EXISTS job_skills(
 #
 #####################################
 
-add_company = ''
+add_company = '''INSERT INTO companies(greenhouse_company_id, company_name) 
+                 VALUES(%s,%s) 
+                 RETURNING company_id'''
 
-add_job = ''
+add_job = '''INSERT INTO jobs(greenhouse_job_id, internal_job_id, company_id, 
+                              job_title, location, posted_date, url) 
+             VALUES(%s,%s,%s,%s,%s,%s,%s)
+             RETURNING job_id'''
 
-add_skill = ''
+add_skill = 'INSERT INTO skills(skill_name) VALUES(%s) RETURNING skill_id'
 
-add_jobskill = ''
+add_job_skill = 'INSERT INTO job_skills(job_id, skill_id) VALUES(%s,%s)'
 
 update_company = ''
 
 update_job = ''
-
-
 
 #####################################
 #

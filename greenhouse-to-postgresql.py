@@ -14,15 +14,18 @@ import psycopg2.extras as pg2x
 #
 ####################
 
+import funcs_greenhouse_tables as fgt
 import scripts_greenhouse_tables as sgt
 import config
 
 #############################################
 #
-# Initialize Lists and Connecting to Database
+# Initialize Lists, Connecting to Database, and Initializing Tables if not already created
 #
 #############################################
 
+fgt.Clear_Greenhouse_Tables()
+fgt.Init_Greenhouse_Tables()
 
 companies = sgt.greenhouse_companies
 
@@ -36,6 +39,7 @@ conn = None
 cur = None
 
 try:
+   
    conn = pg2.connect(
        host = hostname,
        dbname = database,
@@ -45,42 +49,72 @@ try:
 
    cur = conn.cursor(cursor_factory=pg2x.DictCursor)
 
-   sql_script = '.'
-   cur.execute(sql_script)
-   
-   conn.commit()
-
    for company in companies:
 
-      company_url = 'https://boards-api.greenhouse.io/v1/boards/'
-                    + company
-                    + '/jobs' # url to scrape from? In single quotes, eg 'url.com'
+      #Debug Line to tell we're in this line:
+      print('Checking company: ', company)
 
-      response = requests.get(company_url)
+      company_url = [
+                     'https://boards-api.greenhouse.io/v1/boards/'
+                     + company
+                     + '/jobs' ]# url to scrape from, single quotes, eg 'url.com' 
+                    
+      response = requests.get(company_url[0])
       data = response.text
 
       data_json = json.loads(data)
-      jobs_list = data_json['jobs']
-
-      #data.close()
-      #pprint(d)
-
+      
+      try:
+          jobs_list = data_json['jobs']
+      except:
+          jobs_list = []
+          
       for posting in jobs_list:
+         
+         # Debug Line to check loop iteration
+         # print('Checking job title: ', posting['title'])
+
          # debug line
          # print('Company: ', posting['company_name'], '\nJob Title: ',
          #       posting['title'], '\nURL: ', posting['absolute_url'], '\n' )
 
-         # Job Specific posting url
 
+         ###########################
+         #
+         # Job Specific posting url: Should include more specific data
+         #
+         ###########################
+
+         
          posting_url = 'https://boards-api.greenhouse.io/v1/boards/'+ company  + '/jobs/' + str(posting['id']) 
          posting_response = requests.get(posting_url)
          posting_data = posting_response.text
 
-         current = json.loads(posting_data)
+         current_job = json.loads(posting_data)
+
+         ##################################################################
+         #
+         # Add Job to Database or Update if it is Already on the Database 
+         #
+         ##################################################################
+
+         # Debug Line to check loop iteration 
+         print('Checking job title: ', current_job['title'])
+
+
+
+
+
+
+         
 
          ####################################
          #
          # Processing Description (to add NLP)
+         #
+         # This section is meant to parse the meaty parts of the job posting for more useful information 
+         # to be found regarding job qualifications, salary, benefits, etc
+         #
          #
          ####################################
 
