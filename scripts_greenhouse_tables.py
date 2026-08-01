@@ -94,7 +94,7 @@ greenhouse_table_names = ('companies','jobs','skills','jobskills')
 
 
 
-fortune_500s_california = (
+fortune_500s_california = [
     'Live Nation Entertainment',
     'Walt Disney',
     'Monster Beverage',
@@ -152,9 +152,9 @@ fortune_500s_california = (
     'Intuitive Surgical',
     'Synopsys',
     'Amgen',
-    'Farmers Insurance Exchange')
+    'Farmers Insurance Exchange']
 
-remote_companies = (
+remote_companies = [
     'Lockheed Martin',
     'Marsh McLennan Agency',
     'Marriott International',
@@ -254,9 +254,9 @@ remote_companies = (
     'Medtronic',
     'FIS',
     'Scotiabank',
-    'Bell Canada')
+    'Bell Canada']
 
-remote_firsts = (
+remote_firsts = [
     '10up',
     '37signals',
     'Automattic',
@@ -334,6 +334,29 @@ remote_firsts = (
     'XWP',
     'You Need A Budget',
     'Zapier',
-    'Zyte')
+    'Zyte']
 
-skills_list = ()
+greenhouse_companies = [
+    'affirm',
+    'consensys',
+    'netlify',
+    'cloudbeds',
+    'elastic',
+    'datadog',
+    'turing',
+    'wikimedia',
+    'upwork',
+    'gradle',
+    'vercel',
+    'airbnb',
+    'gitlab',
+    'mozilla',
+    'saasgroup',
+    'kentik',
+    'canonical',
+    'eyeo',
+    'ghost',
+    'block',
+    'remote' ]
+
+skills_list = []

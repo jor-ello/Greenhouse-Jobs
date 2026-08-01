@@ -9,7 +9,19 @@ import json
 from pprint import pprint
 import scripts_greenhouse_tables as sgt
 
-companies = []
+companies = sgt.fortune_500s_california + sgt.remote_companies + sgt.remote_firsts
+
+# Lowercase and remove spaces from elements of list
+companies = list(map(str.lower , companies))
+companies = [x.strip(' ') for x in companies]
+#companies = [x.strip('.com') for x in companies]
+#companies = [x.strip('.') for x in companies]
+
+# Remove Duplicate Companies
+companies = list(set(companies))
+
+
+greenhouse_companies = []
 
 
 
@@ -20,25 +32,17 @@ for company in companies:
    response = requests.get(url)
    data = response.text
 
-   data_json = json.loads(data)
-   jobs_list = data_json['jobs']
+   try:
+      data_json = json.loads(data)
+      try:
+         jobs_list = data_json['jobs']
+         greenhouse_companies.append(company)
+      except:
+         print(company, ' does NOT have a greenhouse api site')
+   except:
+      print(company, ' does NOT have a greenhouse api site, and has weird data')
+         
+print('\n\n')
 
-   #data.close()
-   #pprint(d)
-
-   for posting in jobs_list:
-      #print('Company: ', posting['company_name'], '\nJob Title: ', posting['title'], '\nURL: ', posting['absolute_url'], '\n' )
-      posting_url = 'https://boards-api.greenhouse.io/v1/boards/'+ company  + '/jobs/' + str(posting['id'])  #Job Specific Posting
-      posting_response = requests.get(posting_url)
-      posting_data = posting_response.text
-
-      current = json.loads(posting_data)
-
-      desc_html = current['content']
-      desc_text = BeautifulSoup(desc_html, "html.parser").get_text()
-
-      print('Company: ', current['company_name'], '\nJob Title: ', current['title'], '\nURL: ', current['absolute_url'], '\nContent: ',  desc_text)
-      #print('Company: ', current['company_name'], '\nJob Title: ', current['title'], '\nURL: ', current['absolute_url'])
-      #print(posting_url + '\n')
-
-      
+for company in greenhouse_companies:
+   print(company)
