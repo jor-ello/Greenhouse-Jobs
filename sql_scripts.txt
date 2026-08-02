@@ -1,0 +1,31 @@
+
+#################################
+#
+# Scripts for Postgresql
+#
+#################################
+
+
+#
+# Select Statements
+#
+
+
+# Selects all rows where the column entry contains string (case sensitive)
+
+SELECT * FROM table_name WHERE column_name LIKE "%string%"
+
+
+
+#
+
+
+
+#
+
+
+
+#
+
+
+

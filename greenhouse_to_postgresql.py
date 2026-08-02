@@ -24,8 +24,8 @@ import config
 #
 #############################################
 
-fgt.Clear_Greenhouse_Tables()
-fgt.Init_Greenhouse_Tables()
+fgt.Clear_Job_Tables()
+fgt.Init_Job_Tables()
 
 companies = sgt.greenhouse_companies
 

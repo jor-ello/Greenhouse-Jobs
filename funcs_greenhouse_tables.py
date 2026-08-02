@@ -20,7 +20,7 @@ import config
 import scripts_greenhouse_tables as sgt
 
 
-def Init_Greenhouse_Tables():
+def Init_Job_Tables():
    # Need to provide these details in a config file
    hostname = config.hostname
    username = config.username
@@ -60,7 +60,7 @@ def Init_Greenhouse_Tables():
        if conn is not None:
            conn.close()
            
-def Clear_Greenhouse_Tables():
+def Clear_Job_Tables():
    # Need to provide these details in a config file                                                                                                                                                                   
    hostname = config.hostname
    username = config.username
@@ -138,3 +138,9 @@ def Load_Skills_Table():
           cur.close()
       if conn is not None:
           conn.close()
+
+def Reset_Job_Tables():
+   Clear_Greenhouse_Tables()
+   Init_Greenhouse_Tables()
+   Load_Skills_Table()
+   
